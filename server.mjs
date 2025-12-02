@@ -227,3 +227,43 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`AI Quiz backend listening on port ${PORT}`);
 });
+
+// ✅ SUBMIT ALL ANSWERS AT ONCE
+app.post("/api/sessions/:sessionId/participants/:participantId/submit-all", (req, res) => {
+  const { sessionId, participantId } = req.params;
+  const { answers } = req.body; // [{ questionId, selectedOptionIndex }]
+
+  const session = sessions.get(sessionId);
+  if (!session) return res.status(404).json({ message: "Session not found" });
+
+  const participant = session.participants.find(p => p.id === participantId);
+  if (!participant) return res.status(404).json({ message: "Participant not found" });
+
+  if (session.status !== "IN_PROGRESS") {
+    return res.status(400).json({ message: "Quiz not in progress" });
+  }
+
+  let score = 0;
+  participant.answers = [];
+
+  for (const ans of answers) {
+    const question = session.questions.find(q => q.id === ans.questionId);
+    if (!question) continue;
+
+    const isCorrect = question.correctAnswerIndex === ans.selectedOptionIndex;
+    if (isCorrect) score += 10;
+
+    participant.answers.push({
+      questionId: question.id,
+      selectedOptionIndex: ans.selectedOptionIndex,
+      isCorrect
+    });
+  }
+
+  participant.score = score;
+
+  res.json({
+    score,
+    correctCount: participant.answers.filter(a => a.isCorrect).length
+  });
+});
