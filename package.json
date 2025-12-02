@@ -2,21 +2,18 @@
   "name": "ai-quiz-backend",
   "version": "1.0.0",
   "description": "Node.js backend for AI Quiz App with sessions, participants, LLM questions, and leaderboard CSV export.",
-  "main": "server.mjs",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.mjs",
-    "start": "node server.mjs"
+    "start": "functions-framework --target=quizBackend"
   },
   "dependencies": {
+    "@google-cloud/functions-framework": "^3.3.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "openai": "^4.56.0",
+    "@google/genai": "^1.30.0",
     "qrcode": "^1.5.3",
     "uuid": "^9.0.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.0"
   }
 }
