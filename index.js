@@ -8,8 +8,6 @@ import QRCode from "qrcode";
 import { GoogleGenAI, Type } from "@google/genai";
 import crypto from "crypto";
 
-
-
 // --- Configuration ---
 const USE_AI = process.env.AI_USE === 'YES';
 let genAI = null;
@@ -274,7 +272,7 @@ const quizSchema = {
   items: {
     type: Type.OBJECT,
     properties: {
-      question: {
+      text: {
         type: Type.STRING,
         description: "The text of the multiple-choice question."
       },
@@ -294,7 +292,7 @@ const quizSchema = {
         description: "A brief, one-sentence explanation of the correct answer."
       }
     },
-    required: ["question", "options", "correctAnswerIndex", "explanation"]
+    required: ["text", "options", "correctAnswerIndex", "explanation"]
   }
 };
 
