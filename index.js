@@ -70,9 +70,9 @@ app.post("/api/sessions", async (req, res) => {
     sessions[sessionId] = session;
 
     // const joinUrl = `${req.headers["x-public-base-url"] || ""}/join/${sessionId}`.replace(/\/$/, "");
-    const joinUrl = `http://localhost:4200/join/${sessionId}`;
-
-    const qrDataUrl = await QRCode.toDataURL(joinUrl || `http://localhost:4200/join/${sessionId}`);
+    const originHost = req.headers.origin;
+    const joinUrl = `${originHost}/join/${sessionId}`;
+    const qrDataUrl = await QRCode.toDataURL(joinUrl);
 
     res.json({
       sessionId,
